@@ -1,0 +1,30 @@
+﻿@typeparam TItem
+@if (Items is not null)
+{
+    @Header
+    @foreach (var item in Items)
+    {
+        @if (Row is not null)
+        {
+            @Row(item)
+        }
+    }
+    <br />
+    @if (ItemToEdit != null)
+    {
+        @EditTemplate!(ItemToEdit)        
+    }
+
+}
+@code {
+    [Parameter]
+    public RenderFragment<TItem>? Row { get; set; }
+    [Parameter]
+    public List<TItem>? Items { get; set; }
+    [Parameter]
+    public RenderFragment? Header { get; set; }
+    
+    public TItem? ItemToEdit { get; set; }
+    [Parameter]
+    public RenderFragment<TItem>? EditTemplate { get; set; }
+}

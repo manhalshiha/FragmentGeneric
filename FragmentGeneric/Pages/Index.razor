@@ -1,0 +1,66 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>Helloooo, world!</h1>
+
+Welcome to your new app.
+
+<br />
+<br />
+@if (!(customers is null))
+{
+    <RepeaterComponent @ref=repeater Items="customers">
+        <Header><b>Customers:</b></Header>
+        <Row Context="customer">
+            <div>
+                <b>@customer.CompanyName</b>
+                &nbsp; <button class="btn btn-primary"  @onclick="@(()=>
+                {
+                    EditCustomer(customer);
+                })">Edit</button>
+            </div>
+            <div style="margin:5px 15px;">@customer.ContactName</div>
+            <div style="margin:0px 15px;">@customer.PhoneNumber</div>
+            <hr style="display:inline-block;width:200px;">
+        </Row>
+        <EditTemplate Context="currentCustomer">
+            <div>
+                <text>Company name:</text><input class="form-control" @bind-value="currentCustomer.CompanyName">
+            </div>
+            <div>
+                <text>Contact name:</text><input class="form-control" @bind-value="currentCustomer.ContactName">
+            </div>
+            <div>
+                <text>Phone number:</text><input class="form-control" @bind-value="currentCustomer.PhoneNumber">
+            </div>
+        </EditTemplate>
+    </RepeaterComponent>
+}
+
+@code {
+    class Customer
+    {
+        public string? CompanyName { get; set; }
+        public string? ContactName { get; set; }
+        public string? PhoneNumber { get; set; }
+    }
+    private RepeaterComponent<Customer>? repeater;
+    private void EditCustomer(Customer customer)
+    {
+        repeater!.ItemToEdit = customer;
+    }
+    private List<Customer>? customers;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        customers = new List<Customer>();
+        customers.AddRange(new Customer[]
+        {
+            new Customer {CompanyName="abc company",ContactName="frnk liue",PhoneNumber="111-222-333"},
+            new Customer {CompanyName="abc company",ContactName="frnk liue",PhoneNumber="111-222-333"},
+            new Customer {CompanyName="abc company",ContactName="frnk liue",PhoneNumber="111-222-333"},
+        }
+        );
+    }
+}
